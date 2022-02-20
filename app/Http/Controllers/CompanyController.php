@@ -30,6 +30,20 @@ class CompanyController extends Controller
         }
     }
 
+    //create a company
+    public function create(Request $request) {
+        try {
+            $company = Company::create([
+                'name' => $request->name,
+                'logo' => $request->logo,
+                'website' => $request->website,
+                'email' => $request->email,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
     //update a company details
     public function editCompany(Request $request,$id) {
         try {

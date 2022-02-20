@@ -18,6 +18,25 @@ class EmployeeController extends Controller
         }
     }
 
+    public function create(Request $request,$id) {
+        try {
+            $company = Company::find($id);
+            if($company) {
+                $employee = new Employee();
+                $employee->FirstName = $request->fname;
+                $employee->LastName = $request->lname;
+                $employee->email = $request->email;
+                $employee->phone = $request->phone;
+                $employee->company()->associate($company);
+                $employee->save();
+                return $employee;
+            }
+            return 'company doesnt exist ';
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
     //retrirve company employees
     public function comEmployees($com) {
         try {
@@ -26,7 +45,7 @@ class EmployeeController extends Controller
                 $employees = $company->employees;
                 return $employees;
             }
-            return response('company not found');
+            return 'company not found';
         } catch (\Throwable $th) {
             //throw $th;
         }
