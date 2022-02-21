@@ -11,7 +11,7 @@ class CompanyController extends Controller
     //retrieve all companies
     public function index() {
         try {
-            $companies = Company::all();
+            $companies = Company::paginate(10);
             return $companies;
         } catch (\Throwable $th) {
             //throw $th;
@@ -64,7 +64,7 @@ class CompanyController extends Controller
                 'website' => 'nullable|string',
             ]);
             if ($validated) {
-                $company = $this->getCompany($id);
+                $company = $this->show($id);
                 if ($company) {
                     $company->name = $request->com_name;
                     $company->email = $request->email;
@@ -83,7 +83,7 @@ class CompanyController extends Controller
     //delete a company
     public function destroy($id) {
         try {
-            $company = $this->getCompany($id);
+            $company = $this->show($id);
             $company->delete();
         } catch (\Throwable $th) {
             return redirect()->back()->with('error_message', $th->getMessage());

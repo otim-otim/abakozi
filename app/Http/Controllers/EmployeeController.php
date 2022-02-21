@@ -11,7 +11,7 @@ class EmployeeController extends Controller
     //retrieve all employees
     public function index() {
         try {
-            $employees = Employee::all();
+            $employees = Employee::paginate(10);
             return $employees;
         } catch (\Throwable $th) {
             //throw $th;
