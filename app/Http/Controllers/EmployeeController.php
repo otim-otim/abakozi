@@ -18,7 +18,7 @@ class EmployeeController extends Controller
         }
     }
 
-    public function create(Request $request,$id) {
+    public function store(Request $request,$id) {
         try {
             $validated = $request->validate([
                 'fname' => 'required|string|between:2,100',
@@ -48,7 +48,7 @@ class EmployeeController extends Controller
     }
 
     //retrirve company employees
-    public function comEmployees($com) {
+    public function indexComEmployees($com) {
         try {
             $company = Company::find($com);
             if($company) {
@@ -62,7 +62,7 @@ class EmployeeController extends Controller
     }
 
     //get a particular employee
-    public function getEmployee($id) {
+    public function show($id) {
         try {
             $employee = Employee::find($id);
             if($employee){
@@ -75,7 +75,7 @@ class EmployeeController extends Controller
     }
 
     //edit employees details
-    public function edit(Request $request,$id) {
+    public function update(Request $request,$id) {
         try {
             $validated = $request->validate([
                 'fname' => 'required|string|between:2,100',
@@ -100,7 +100,7 @@ class EmployeeController extends Controller
     }
 
     //delete an employee
-    public function remove($id) {
+    public function destroy($id) {
         try {
             $employee = $this->getEmployee($id);
             $employee->delete();

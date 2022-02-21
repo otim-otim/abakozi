@@ -21,7 +21,7 @@ class CompanyController extends Controller
     }
 
     //retieve a single company
-    public function getCompany($id) {
+    public function show($id) {
         try {
             $company = Company::find($id);
             return $company;
@@ -31,7 +31,7 @@ class CompanyController extends Controller
     }
 
     //create a company
-    public function create(Request $request) {
+    public function store(Request $request) {
         try {
             $validated = $request->validate([
                 'name' => 'required|string|between:2,100',
@@ -55,7 +55,7 @@ class CompanyController extends Controller
     }
 
     //update a company details
-    public function editCompany(Request $request,$id) {
+    public function update(Request $request,$id) {
         try {
             $validated = $request->validate([
                 'name' => 'required|string|between:2,100',
@@ -81,7 +81,7 @@ class CompanyController extends Controller
     }
 
     //delete a company
-    public function deleteCompany($id) {
+    public function destroy($id) {
         try {
             $company = $this->getCompany($id);
             $company->delete();
