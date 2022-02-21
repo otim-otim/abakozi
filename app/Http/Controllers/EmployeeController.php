@@ -20,18 +20,28 @@ class EmployeeController extends Controller
 
     public function create(Request $request,$id) {
         try {
+            $validated = $request->validate([
+                'fname' => 'required|string|between:2,100',
+                'lname' => 'required|string|between:2,100',
+                'email' => 'required|string|email|max:255',
+                'phone' => 'nullable|string',
+
+            ]);
+            if ($validated) {
             $company = Company::find($id);
             if($company) {
-                $employee = new Employee();
-                $employee->FirstName = $request->fname;
-                $employee->LastName = $request->lname;
-                $employee->email = $request->email;
-                $employee->phone = $request->phone;
-                $employee->company()->associate($company);
-                $employee->save();
-                return $employee;
+                $company->employees()->create([
+                    'FirstName' => $request->fname,
+                    'LastName' => $request->lname,
+                    'email' => $request->email,
+                    'phone' => $request->phone
+
+                ]);
+
+
             }
             return 'company doesnt exist ';
+        }
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -67,15 +77,24 @@ class EmployeeController extends Controller
     //edit employees details
     public function edit(Request $request,$id) {
         try {
-            $employee = $this->getEmployee($id);
-            $employee->FirstName = $request->fname;
-            $employee->LastName = $request->lname;
-            $employee->email = $request->email;
-            $employee->phone = $request->phone;
-            $employee->company = $request->company;
-            $employee->save();
-            return $employee;
-        } catch (\Throwable $th) {
+            $validated = $request->validate([
+                'fname' => 'required|string|between:2,100',
+                'lname' => 'required|string|between:2,100',
+                'email' => 'required|string|email|max:255',
+                'phone' => 'nullable|string',
+
+            ]);
+            if ($validated) {
+                $employee = $this->getEmployee($id);
+                $employee->FirstName = $request->fname;
+                $employee->LastName = $request->lname;
+                $employee->email = $request->email;
+                $employee->phone = $request->phone;
+                $employee->company = $request->company;
+                $employee->save();
+                return $employee;
+            }
+        }catch (\Throwable $th) {
             //throw $th;
         }
     }

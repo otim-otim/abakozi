@@ -33,12 +33,22 @@ class CompanyController extends Controller
     //create a company
     public function create(Request $request) {
         try {
-            $company = Company::create([
-                'name' => $request->name,
-                'logo' => $request->logo,
-                'website' => $request->website,
-                'email' => $request->email,
+            $validated = $request->validate([
+                'name' => 'required|string|between:2,100',
+                'email' => 'required|string|email|max:255',
+                'logo' => 'nullable|string',
+                'website' => 'nullable|string',
             ]);
+            if($validated){
+                $company = Company::create([
+                    'name' => $request->name,
+                    'logo' => $request->logo,
+                    'website' => $request->website,
+                    'email' => $request->email
+                ]);
+                return $company;
+            }
+
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -47,13 +57,24 @@ class CompanyController extends Controller
     //update a company details
     public function editCompany(Request $request,$id) {
         try {
-            $company = $this->getCompany($id);
-            $company-> name = $request->com_name;
-            $company-> email = $request->email;
-            $company-> logo = $request->logo;
-            $company-> website = $request->website;
-            $company->save();
-            return $company;
+            $validated = $request->validate([
+                'name' => 'required|string|between:2,100',
+                'email' => 'required|string|email|max:255',
+                'logo' => 'nullable|string',
+                'website' => 'nullable|string',
+            ]);
+            if ($validated) {
+                $company = $this->getCompany($id);
+                if ($company) {
+                    $company->name = $request->com_name;
+                    $company->email = $request->email;
+                    $company->logo = $request->logo;
+                    $company->website = $request->website;
+                    $company->save();
+                    return $company;
+                }
+                return 'company not found';
+            }
         } catch (\Throwable $th) {
             return redirect()->back()->with('error_message', $th->getMessage());
         }
