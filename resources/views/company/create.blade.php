@@ -1,6 +1,7 @@
 @extends('layouts.master')
 @section('content')
     <form method="post" action="{{route('company.store')}}">
+         @csrf
         <div class="mb-3">
             <label for="com_name" class="form-label">Name</label>
             <input type="text"  class="form-control" id="com_name" name="com_name" aria-describedby="emailHelp">
