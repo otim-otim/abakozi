@@ -1,3 +1,4 @@
+@extends('layouts.master')
 @section('content')
     <img src="{{$company->logo}}" alt="{{$company->name . ' logo'}}" class="flex">
     <h5>{{$company->name .' Details'}}</h5>
@@ -14,7 +15,7 @@
     </div>
     <div class="row">
         <h4 class="col col-md-8">{{$company->name .' employees'}}</h4>
-        <a href="{{route('employee.create')}}" class="col col-md-4 btn">New Employee</a>
+        <a href="{{route('employee.create',['id'=>$company->id])}}" class="col col-md-4 btn">New Employee</a>
     </div>
 
 

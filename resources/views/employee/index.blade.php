@@ -1,3 +1,4 @@
+@extends('layouts.master')
 @section()
     <h6> all Employees</h6>
     <table class="table">

@@ -1,3 +1,4 @@
+@extends('layouts.master')
 @section()
     <form method="post" action="{{route('company.store')}}">
         <div class="mb-3">

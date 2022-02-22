@@ -1,3 +1,4 @@
+@extends('layouts.master')
 @section()
     <form method="put" action="{{route('employee.update',['id'=>$employee->id])}}">
         <div class="mb-3">

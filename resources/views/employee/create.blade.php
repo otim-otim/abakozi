@@ -1,3 +1,4 @@
+@extends('layouts.master')
 @section()
     <form method="post" action="{{route('employee.store',['id'=>$company->id])}}">
         <div class="mb-3">

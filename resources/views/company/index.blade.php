@@ -1,10 +1,10 @@
+@extends('layouts.master')
 @section('content')
 
     <h5>Companies</h5>
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
