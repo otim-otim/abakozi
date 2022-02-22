@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section()
+@section('content')
     <form method="post" action="{{route('employee.store',['id'=>$company->id])}}">
         <div class="mb-3">
             <label for="fname" class="form-label">First Name</label>

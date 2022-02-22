@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section()
+@section('content')
     <form method="put" action="{{route('company.update',['id'=>$company->id])}}">
         <div class="mb-3">
             <label for="com_name" class="form-label">Name</label>
