@@ -16,10 +16,24 @@ class EmployeeController extends Controller
                 return $employees;
             }
             $employees = Employee::paginate(10);
-            return view('')
+            return view('employee.index',['employees'=> $employees])
+                ->with('title','All employees');
         } catch (\Throwable $th) {
             //throw $th;
+            return redirect()->back()->with('error_message', $th->getMessage());
         }
+    }
+    //return view for employee creation
+    public function create($id){
+        try {
+            $company = Company::findOrFail($id);
+            return view('employee.create',['company'=>$company])
+                ->with('title','Create Employee');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error_message',$th->getMessage());
+        }
+
     }
 
     public function store(Request $request,$id) {
@@ -48,6 +62,7 @@ class EmployeeController extends Controller
         }
         } catch (\Throwable $th) {
             //throw $th;
+            return redirect()->back()->with('error_message', $th->getMessage());
         }
     }
 
@@ -62,6 +77,7 @@ class EmployeeController extends Controller
             return 'company not found';
         } catch (\Throwable $th) {
             //throw $th;
+            return redirect()->back()->with('error_message', $th->getMessage());
         }
     }
 
@@ -75,10 +91,22 @@ class EmployeeController extends Controller
             return response('employee details not found');
         } catch (\Throwable $th) {
             //throw $th;
+            return redirect()->back()->with('error_message', $th->getMessage());
         }
     }
 
-    //edit employees details
+    //edit view
+    public function edit($id) {
+        try {
+            $employee = Employee::findOrFail($id);
+            return view('employee.edit', ['employee' => $employee])
+            ->with('title', 'Edit Employee');
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error_message',$th->getMessage());
+        }
+    }
+    //update employees details
     public function update(Request $request,$id) {
         try {
             $validated = $request->validate([
@@ -100,6 +128,7 @@ class EmployeeController extends Controller
             }
         }catch (\Throwable $th) {
             //throw $th;
+            return redirect()->back()->with('error_message', $th->getMessage());
         }
     }
 
@@ -108,8 +137,9 @@ class EmployeeController extends Controller
         try {
             $employee = $this->getEmployee($id);
             $employee->delete();
+            return 'employee successfully deleted';
         } catch (\Throwable $th) {
-            return redirect()->back();
+            return redirect()->back()->with('error_message', $th->getMessage());
         }
     }
 }

@@ -29,16 +29,22 @@ class CompanyController extends Controller
     public function show(Request $request,$id) {
         try {
             $company = Company::find($id);
+            $employees = $company->employees;
             if ($request->is('api/*')) {
-            return $company;
+            return ['company'=>$company,'employees'=>$employees];
             }
-            return view('company.show',['company'=>$company])
+            return view('company.show',['company'=>$company,'employees'=>$employees])
                 ->with('title','Company Details');
 
         } catch (\Throwable $th) {
             return redirect()->back()->with('error_message', $th->getMessage());
             // return  $th->getMessage();
         }
+    }
+
+    //create a view for creating a company
+    public function create(){
+        return view('company.create')->with('title','Create Company');
     }
 
     //create a company
@@ -63,6 +69,20 @@ class CompanyController extends Controller
                 return view('company.show',['company'=>$company])->with('title','Company details');
             }
 
+        } catch (\Throwable $th) {
+            //throw $th;
+            return redirect()->back()->with('error_message', $th->getMessage());
+        }
+    }
+
+    //return edit view
+    public function edit($id) {
+        try {
+            $company = Company::findOrFail($id);
+            if($company) {
+                return view('company.edit',['company'=>$company])
+                    ->with('title','Edit Company');
+            }
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with('error_message', $th->getMessage());
