@@ -9,24 +9,35 @@ use PhpParser\Node\Stmt\TryCatch;
 class CompanyController extends Controller
 {
     //retrieve all companies
-    public function index() {
+    public function index(Request $request) {
         try {
+            if($request->is('api/*')){
+                $companies = Company::all();
+                return $companies;
+            }
             $companies = Company::paginate(10);
-            return $companies;
+            return view('company.index',['companies'=>$companies])->with('title','companies');
         } catch (\Throwable $th) {
             //throw $th;
             return redirect()->back()->with('error_message', $th->getMessage());
+            // return  $th->getMessage();
         }
 
     }
 
     //retieve a single company
-    public function show($id) {
+    public function show(Request $request,$id) {
         try {
             $company = Company::find($id);
+            if ($request->is('api/*')) {
             return $company;
+            }
+            return view('company.show',['company'=>$company])
+                ->with('title','Company Details');
+
         } catch (\Throwable $th) {
             return redirect()->back()->with('error_message', $th->getMessage());
+            // return  $th->getMessage();
         }
     }
 
@@ -46,11 +57,15 @@ class CompanyController extends Controller
                     'website' => $request->website,
                     'email' => $request->email
                 ]);
-                return $company;
+                if($request->is('api/*')){
+                    return $company;
+                }
+                return view('company.show',['company'=>$company])->with('title','Company details');
             }
 
         } catch (\Throwable $th) {
             //throw $th;
+            return redirect()->back()->with('error_message', $th->getMessage());
         }
     }
 
@@ -64,28 +79,38 @@ class CompanyController extends Controller
                 'website' => 'nullable|string',
             ]);
             if ($validated) {
-                $company = $this->show($id);
+                $company = Company::find($id);
                 if ($company) {
                     $company->name = $request->com_name;
                     $company->email = $request->email;
                     $company->logo = $request->logo;
                     $company->website = $request->website;
                     $company->save();
-                    return $company;
+                    if($request->is('api/*')){
+                        return $company;
+                    }
+                    return view('company.show',['company'=>$company])
+                        ->with('title',$company->name.' details');
                 }
                 return 'company not found';
             }
         } catch (\Throwable $th) {
             return redirect()->back()->with('error_message', $th->getMessage());
+            // return  $th->getMessage();
         }
     }
 
     //delete a company
-    public function destroy($id) {
+    public function destroy(Request $request,$id) {
         try {
-            $company = $this->show($id);
+            $company = Company::findOrFail($id);
             $company->delete();
+            if($request->is('api/*')){
+                return 'successfully deleted company';
+            }
+            return redirect()->back()->with('message','company deleted successfully');
         } catch (\Throwable $th) {
+            // return redirect()->back()->with('error_message', $th->getMessage());
             return redirect()->back()->with('error_message', $th->getMessage());
         }
 

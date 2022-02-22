@@ -9,10 +9,14 @@ use Illuminate\Http\Request;
 class EmployeeController extends Controller
 {
     //retrieve all employees
-    public function index() {
+    public function index(Request $request) {
         try {
+            if($request->is('api/*')){
+                $employees = Employee::all();
+                return $employees;
+            }
             $employees = Employee::paginate(10);
-            return $employees;
+            return view('')
         } catch (\Throwable $th) {
             //throw $th;
         }
