@@ -10,22 +10,26 @@
                 <th scope="col">Email</th>
                 <th scope="col">website</th>
                 <th scope="col">Logo</th>
+                <th scope="col"></th>
+
             </tr>
         </thead>
         <tbody>
             @foreach ($companies as $company )
                 <tr>
-                    <th scope="row">1</th>
+                    <th scope="row">{{$company->id}}</th>
                     <td><a href="{{route('company.show',['id'=>$company->id])}}">{{$company->name}}</a></td>
                     <td>{{$company->email}}</td>
                     <td>{{$company->website}}</td>
                     <td>
                         <img src="{{$company->logo}}" alt="{{$company->name . ' logo'}}">
                     </td>
+
                 </tr>
             @endforeach
 
         </tbody>
     </table>
+    {{$companies->links()}}
 @endsection
 

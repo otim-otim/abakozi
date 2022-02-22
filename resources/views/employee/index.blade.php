@@ -15,7 +15,7 @@
         <tbody>
             @foreach ($employees as $employee )
                 <tr>
-                    <th scope="row">1</th>
+                    <th scope="row">{{$employee->id}}</th>
                     <td>
                         <a href="{{route('employee.show',['id'=>$employee->id])}}">
                             {{$employee->FirstName .''.$employee->LastName}}
@@ -33,4 +33,5 @@
             @endforeach
         </tbody>
     </table>
+    {{$employees->links()}}
 @endsection
