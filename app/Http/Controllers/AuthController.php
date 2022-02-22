@@ -33,13 +33,13 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        if (!$token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-        if(!$request->url())
-        return $this->createNewToken($token);
 
-    }
+            if (!$token = auth()->guard('api')->attempt($validator->validated())) {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+
+            return $this->createNewToken($token);
+        }
     /**
      * Register a User.
      *
@@ -72,7 +72,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        auth()->guard('api')->logout();
         return response()->json(['message' => 'User successfully signed out']);
     }
     /**
