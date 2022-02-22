@@ -48,13 +48,17 @@ class EmployeeController extends Controller
             if ($validated) {
             $company = Company::find($id);
             if($company) {
-                $company->employees()->create([
+                $employee = $company->employees()->create([
                     'FirstName' => $request->fname,
                     'LastName' => $request->lname,
                     'email' => $request->email,
                     'phone' => $request->phone
 
                 ]);
+                if($request->is('api/*')){
+                    return $employee;
+                }
+                return route('company.show',['id'=>$company->id]);
 
 
             }
@@ -124,7 +128,10 @@ class EmployeeController extends Controller
                 $employee->phone = $request->phone;
                 $employee->company = $request->company;
                 $employee->save();
-                return $employee;
+                if ($request->is('api/*')) {
+                    return $employee;
+                }
+                return route('employee.show', ['id' => $employee->id]);
             }
         }catch (\Throwable $th) {
             //throw $th;

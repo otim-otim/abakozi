@@ -66,7 +66,8 @@ class CompanyController extends Controller
                 if($request->is('api/*')){
                     return $company;
                 }
-                return view('company.show',['company'=>$company])->with('title','Company details');
+                return route('company.show',['id'=> $company->id]);
+
             }
 
         } catch (\Throwable $th) {
@@ -109,8 +110,7 @@ class CompanyController extends Controller
                     if($request->is('api/*')){
                         return $company;
                     }
-                    return view('company.show',['company'=>$company])
-                        ->with('title',$company->name.' details');
+                    return route('company.show', ['id' => $company->id]);
                 }
                 return 'company not found';
             }
@@ -128,6 +128,7 @@ class CompanyController extends Controller
             if($request->is('api/*')){
                 return 'successfully deleted company';
             }
+            // return route('company.index');
             return redirect()->back()->with('message','company deleted successfully');
         } catch (\Throwable $th) {
             // return redirect()->back()->with('error_message', $th->getMessage());
